@@ -2,11 +2,23 @@ import psutil as p
 import json
 RAM_WARNING=90
 CPU_WARNING=90
-def cpu():
+def conf():
+    with open("config.json","r") as file:
+        return json.load(file)
+config = conf()
+cpu_threshold=config.get("cpu_warning",90)
+disk_threshold=config.get("disk_warning",90)
+vm_threshold= config.get("vm_warning",90)
+print(cpu_threshold)
+
+
+
+def get_cpu():
     return p.cpu_percent(
-        interval = 1
+        interval = 3
     )
-def vm():
+
+def get_vm():
     d=p.virtual_memory()
     return {
         "percent":d.percent,
@@ -15,7 +27,7 @@ def vm():
         "availale":d.available
     }
 
-def disk():
+def get_disk():
     Disk=p.disk_usage("/")
     return {
         "percent":Disk.percent,
@@ -113,6 +125,7 @@ def generate_alerts(data):
                 f"RAM usage is "
                 f"{data['memory']}%"
         })
+print(generate_alerts(cpu_threshold))
 def collect_metrics():
 
     memory = get_memory()
@@ -121,15 +134,15 @@ def collect_metrics():
 
     disk = get_disk()
 
-    disk_io = get_disk_io()
+    #disk_io = get_disk_io()
 
-    network = get_network()
+    #network = get_network()
 
     processes = get_processes()
 
     users = get_users()
 
-    uptime = get_uptime()
+    #uptime = get_uptime()
 
     data = {
 

@@ -1,0 +1,15 @@
+{
+    "windows_server": "http://192.168.1.20:8000",
+
+    "send_interval": 5,
+
+    "database_interval": 60,
+
+    "retention_days": 7,
+
+    "cpu_warning": 90,
+
+    "ram_warning": 90,
+
+    "disk_warning": 90
+}
